@@ -1,0 +1,273 @@
+/* A continuous instrument surface: hierarchy comes from data, not boxes. */
+.ev-dashboard {
+  --ev-bg: #101416;
+  --ev-card: #171c20;
+  --ev-line: #30383e;
+  --ev-muted: #a5afb7;
+  --ev-text: #eef2f4;
+  --ev-accent: #dce5e9;
+  --ev-recovery: #8ecbb6;
+  --ev-control-border: #66737c;
+  box-sizing: border-box;
+  max-width: 1920px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 32px 48px 24px;
+  background: var(--ev-bg);
+  color: var(--ev-text);
+  font-family: Inter, "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}
+.ev-dashboard * { box-sizing: border-box; }
+.ev-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; padding-right: 176px; margin-bottom: 16px; }
+.ev-eyebrow { font-size: 11px; color: var(--ev-muted); margin-bottom: 8px; letter-spacing: .5px; }
+.ev-header h1 { font-size: 20px; font-weight: 500; margin: 0 0 12px; letter-spacing: .2px; }
+.ev-vehicle { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--ev-muted); }
+.ev-vehicle strong { font-size: 14px; color: var(--ev-text); font-weight: 500; }
+.ev-vehicle span + span { border-left: 1px solid var(--ev-line); padding-left: 16px; }
+.ev-session { display: flex; align-items: center; gap: 24px; font-size: 12px; white-space: nowrap; }
+.ev-session > span:last-child { font-size: 24px; font-weight: 400; }
+.ev-session small { font-size: 12px; color: var(--ev-muted); }
+.ev-status { display: flex; align-items: center; gap: 8px; color: var(--ev-muted); font-size: 12px; }
+.ev-status i, .battery-status i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--ev-muted); }
+.ev-status.running, .ev-drive-state.regen { color: var(--ev-recovery); }
+.ev-status.running i, .battery-status i.charging { background: var(--ev-recovery); }
+.ev-status.paused { color: #e4bf8a; }
+.ev-status.paused i { background: #e4bf8a; }
+.cycle-selector { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 12px 0; border-top: 1px solid var(--ev-line); margin-bottom: 16px; }
+.cycle-selector label, .cycle-selector small { font-size: 11px; color: var(--ev-muted); }
+.cycle-selector select { font: inherit; font-size: 13px; background: var(--ev-card); color: var(--ev-text); border: 1px solid var(--ev-control-border); border-radius: 4px; min-height: 40px; padding: 8px 28px 8px 12px; }
+.cycle-selector > span { font-size: 12px; }
+.cycle-selector small { margin-left: auto; }
+.ev-card { min-width: 0; padding: 24px; background: transparent; border: 0; border-radius: 0; }
+.ev-cockpit { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr); gap: 32px; padding: 16px 0 24px; border-top: 1px solid var(--ev-line); border-bottom: 1px solid var(--ev-line); }
+.battery-panel { padding: 0 32px 0 0; border-right: 1px solid var(--ev-line); }
+.motor-panel { padding: 0 0 0 32px; border-left: 1px solid var(--ev-line); }
+.ev-card-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ev-card-heading h2 { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; margin: 0; color: var(--ev-muted); }
+.ev-card-heading svg { width: 16px; height: 16px; stroke-width: 1.7; }
+.ev-tag { font-size: 11px; color: var(--ev-muted); white-space: nowrap; }
+.soc-readout { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.soc-readout strong { font-size: 64px; line-height: 1.15; font-weight: 400; letter-spacing: -2px; white-space: nowrap; }
+.soc-precision { font-size: 28px; letter-spacing: -.5px; color: var(--ev-muted); }
+.soc-readout strong small { font-size: 16px; color: var(--ev-muted); margin-left: 8px; letter-spacing: 0; }
+.soc-readout > span { font-size: 11px; color: var(--ev-muted); }
+.soc-track, .power-track { height: 3px; background: var(--ev-line); overflow: hidden; margin: 16px 0; }
+.soc-track > div { height: 100%; background: var(--ev-recovery); transition: width 200ms linear; }
+.battery-status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ev-muted); margin-bottom: 24px; }
+.ev-metric-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 24px 16px; align-items: start; }
+.ev-metric { min-width: 0; }
+.ev-metric > span { display: block; color: var(--ev-muted); font-size: 12px; margin-bottom: 8px; }
+.ev-metric strong { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; font-size: 22px; font-weight: 400; line-height: 1.2; }
+.ev-metric small { font-size: 11px; font-weight: 400; color: var(--ev-muted); }
+.ev-metric.accent strong { color: var(--ev-recovery); }
+.primary-metric strong { font-size: 40px; color: var(--ev-text); }
+.primary-metric > span { color: var(--ev-text); }
+.ev-footnote { font-size: 11px; line-height: 1.6; color: var(--ev-muted); margin: 24px 0 0; }
+.power-readout { margin-top: 24px; margin-bottom: 24px; }
+.power-readout > span { display: block; font-size: 12px; color: var(--ev-muted); margin-bottom: 4px; }
+.power-readout strong { font-size: 64px; line-height: 1.15; font-weight: 400; letter-spacing: -2px; }
+.power-readout small { font-size: 16px; letter-spacing: 0; color: var(--ev-muted); margin-left: 8px; }
+.motor-panel.recovering .power-readout strong { color: var(--ev-recovery); }
+.motor-panel.recovering .power-track > div { background: var(--ev-recovery); }
+.power-track > div { height: 100%; background: var(--ev-accent); transition: width 180ms linear; }
+.ev-speed-panel { display: flex; flex-direction: column; padding: 0; min-width: 0; }
+.ev-gear { display: inline-flex; align-items: baseline; gap: 8px; }
+.ev-gear strong { font-size: 28px; line-height: 1; font-weight: 500; }
+.ev-gear > span { font-size: 12px; color: var(--ev-muted); }
+.ev-speed-gauge { display: flex; align-items: center; justify-content: center; flex: 1; min-height: 280px; }
+.ev-speed-gauge .gauge-container { width: 100% !important; max-width: 420px; height: auto !important; }
+.ev-speed-gauge canvas { width: 100%; height: auto; max-width: 420px; }
+.ev-drive-state { text-align: center; color: var(--ev-muted); font-size: 13px; margin: 4px 0 16px; }
+.ev-speed-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid var(--ev-line); padding-top: 16px; text-align: center; }
+.ev-speed-summary span { display: block; color: var(--ev-muted); font-size: 12px; margin-bottom: 8px; }
+.ev-speed-summary strong { font-size: 22px; font-weight: 400; white-space: nowrap; }
+.ev-speed-summary small { font-size: 11px; color: var(--ev-muted); margin-left: 8px; }
+.ev-charts { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 48px; margin: 16px 0; }
+.chart-card { padding: 0; }
+.chart-card h2 small { margin-left: 4px; font-size: 11px; color: var(--ev-muted); font-weight: 400; }
+.chart-card canvas { display: block; width: 100%; height: 144px; margin-top: 12px; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 24px; color: var(--ev-muted); font-size: 11px; margin-top: 12px; }
+.chart-legend span { display: flex; align-items: center; gap: 8px; }
+.chart-legend i { display: inline-block; width: 12px; height: 2px; }
+.chart-legend strong { color: var(--ev-text); font-size: 12px; font-weight: 400; }
+.chart-card .ev-footnote { margin-top: 8px; }
+.ev-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; padding: 16px 0; border-top: 1px solid var(--ev-line); border-bottom: 1px solid var(--ev-line); }
+.ev-controls button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; padding: 10px 16px; border-radius: 4px; border: 1px solid var(--ev-control-border); color: var(--ev-text); background: transparent; font: inherit; font-size: 12px; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease; }
+.ev-controls button:hover:not(:disabled) { background: #263036; }
+.ev-controls button:disabled { opacity: .4; cursor: default; }
+.ev-controls button.ev-primary { background: var(--ev-accent); color: #162025; border-color: var(--ev-accent); }
+.ev-controls button.ev-primary:hover:not(:disabled) { background: #fff; }
+.transport { display: flex; gap: 8px; }
+.simulation-speed { display: flex; align-items: center; gap: 16px; }
+.simulation-speed > span { font-size: 12px; color: var(--ev-muted); }
+.simulation-speed > div { display: flex; gap: 0; }
+.simulation-speed button { padding: 8px 16px; border-radius: 0; border-right: 0; }
+.simulation-speed button:first-child { border-radius: 4px 0 0 4px; }
+.simulation-speed button:last-child { border-radius: 0 4px 4px 0; border-right: 1px solid var(--ev-control-border); }
+.simulation-speed button[aria-pressed=true] { background: #dce5e9; color: #162025; }
+.engineering-toggle span { color: var(--ev-muted); font-size: 11px; margin-left: 8px; }
+.engineering-toggle[aria-pressed=true] { border-color: var(--ev-recovery); }
+.engineering-panel { padding: 24px 0 0; }
+.engineering-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px 32px; margin-top: 24px; }
+.ev-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-top: 16px; color: var(--ev-muted); font-size: 11px; }
+.ev-dashboard :focus-visible { outline: 2px solid var(--ev-accent); outline-offset: 4px; }
+@media (min-width:1201px) {
+  .ev-metric-grid { row-gap: 16px; }
+  .soc-readout { margin-top: 16px; }
+  .battery-panel .ev-footnote { margin-top: 16px; }
+}
+@media (min-width:1700px) { .ev-dashboard { padding: 32px 64px 16px; } }
+@media (max-width:1200px) {
+  .ev-dashboard { padding: 24px 32px; }
+  .ev-header { padding-right: 160px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .ev-cockpit { gap: 24px; grid-template-columns: 1fr 1fr; }
+  .ev-speed-panel { grid-column: 1/-1; grid-row: 1; padding-bottom: 24px; border-bottom: 1px solid var(--ev-line); }
+  .battery-panel { border-right: 0; padding: 0; }
+  .motor-panel { padding-left: 24px; }
+  .engineering-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .cycle-selector small { margin-left: 0; flex-basis: 100%; }
+  .ev-charts { gap: 32px; }
+}
+@media (max-width:640px) {
+  .ev-dashboard { display: flex; flex-direction: column; padding: 64px 24px 24px; }
+  .ev-header { order: 0; padding: 0; margin-bottom: 16px; gap: 16px; }
+  .ev-eyebrow { font-size: 11px; margin-bottom: 4px; }
+  .ev-header h1 { font-size: 18px; margin-bottom: 12px; }
+  .ev-vehicle { gap: 8px 12px; }
+  .ev-vehicle span + span { padding-left: 12px; }
+  .ev-session { gap: 24px; }
+  .cycle-selector { order: 1; gap: 8px 12px; margin-bottom: 0; }
+  .cycle-selector small { line-height: 1.6; }
+  .cycle-selector > span { flex: 1; }
+  .ev-controls { order: 2; padding: 16px 0; display: grid; grid-template-columns: 1fr auto; gap: 12px; }
+  .transport { grid-column: 1/-1; }
+  .transport button { flex: 1; }
+  .simulation-speed { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .simulation-speed > span { font-size: 11px; }
+  .simulation-speed button { padding: 8px 12px; min-width: 44px; }
+  .ev-controls .engineering-toggle { padding: 8px; align-self: end; gap: 4px; font-size: 11px; }
+  .engineering-toggle span { margin-left: 4px; }
+  .ev-cockpit { order: 3; grid-template-columns: 1fr; gap: 24px; padding-top: 24px; border-top: 0; }
+  .ev-speed-panel { grid-column: auto; grid-row: 1; }
+  .ev-speed-gauge { min-height: 240px; }
+  .soc-readout strong, .power-readout strong { font-size: 56px; }
+  .primary-metric strong { font-size: 36px; }
+  .ev-metric strong { font-size: 22px; }
+  .ev-metric.primary-metric strong { font-size: 36px; }
+  .motor-panel { border-left: 0; border-top: 1px solid var(--ev-line); padding: 24px 0 0; }
+  .ev-charts { order: 4; grid-template-columns: 1fr; gap: 24px; }
+  .chart-card + .chart-card { border-top: 1px solid var(--ev-line); padding-top: 24px; }
+  .chart-card canvas { height: 170px; }
+  .chart-legend { gap: 12px; }
+  .engineering-panel { order: 5; border-top: 1px solid var(--ev-line); }
+  .engineering-grid { gap: 24px 16px; }
+  .ev-footer { order: 6; margin-top: 24px; }
+}
+@media (max-width:380px) {
+  .ev-controls { grid-template-columns: 1fr; }
+  .simulation-speed { flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; }
+  .ev-controls .engineering-toggle { justify-self: start; }
+  .ev-vehicle { gap: 8px; }
+  .ev-vehicle span + span { padding-left: 8px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .ev-dashboard *, .ev-dashboard *::before, .ev-dashboard *::after { transition: none !important; }
+}
+.simulation-timeline { padding: 8px 0 12px; }
+.simulation-timeline > div { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; }
+.simulation-timeline label, .simulation-timeline small { color: var(--ev-muted); }
+.simulation-timeline output { font-variant-numeric: tabular-nums; }
+.simulation-timeline output span { margin-left: 16px; color: var(--ev-recovery); }
+.simulation-timeline input { width: 100%; height: 24px; margin: 4px 0; accent-color: var(--ev-recovery); cursor: pointer; }
+.simulation-timeline small { display: block; font-size: 11px; min-height: 18px; }
+.simulation-timeline [role=alert] { color: #e4bf8a; margin-left: 12px; }
+.ev-controls .complete-button { border-color: var(--ev-recovery); color: var(--ev-recovery); }
+.ev-status.completed { color: var(--ev-recovery); }
+.ev-status.completed i { background: var(--ev-recovery); }
+.completion-summary { padding: 16px 0; border-bottom: 1px solid var(--ev-line); }
+.completion-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.completion-heading h2 { font-size: 14px; font-weight: 500; margin: 0; }
+.completion-heading h2 span { color: var(--ev-recovery); margin-left: 12px; font-size: 12px; }
+.completion-heading button { background: transparent; color: var(--ev-text); border: 1px solid var(--ev-control-border); border-radius: 4px; padding: 8px 16px; min-height: 44px; cursor: pointer; }
+.completion-heading button:hover { background: #263036; }
+.completion-summary dl { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 16px; margin: 12px 0; }
+.completion-summary dt { color: var(--ev-muted); font-size: 11px; margin-bottom: 8px; }
+.completion-summary dd { margin: 0; font-size: 22px; font-variant-numeric: tabular-nums; }
+.completion-summary dd small { font-size: 11px; color: var(--ev-muted); }
+.completion-summary p { font-size: 11px; color: var(--ev-muted); margin: 0; }
+@media(max-width:640px) {
+  .simulation-timeline { order: 2; }
+  .ev-controls { grid-template-columns: 1fr; }
+  .transport { flex-wrap: wrap; }
+  .transport button { flex: 1 1 40%; }
+  .simulation-speed { width: 100%; flex-direction: column; align-items: flex-start; }
+  .simulation-speed > div { width: 100%; }
+  .simulation-speed button { min-width: 0; flex: 1; padding: 8px 6px; }
+  .ev-controls .engineering-toggle { justify-self: start; }
+  .completion-summary { order: 5; }
+  .completion-summary dl { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+/* Phase 2: compact engineering presentation, with meaningful motion only. */
+.ev-session { display: grid; grid-template-columns: auto auto auto; gap: 8px 24px; align-items: center; }
+.ev-session .session-time { font-size: 22px; font-variant-numeric: tabular-nums; min-width: 154px; }
+.ev-session .session-time small { font-size: 13px; }
+.session-cycle strong { font-weight: 500; font-size: 16px; margin-left: 6px; }
+.ev-session > .session-result { grid-column: 1/-1; text-align: right; color: var(--ev-muted); font-size: 11px; }
+.ev-status.computing { color: #e4bf8a; }
+.ev-status.computing i { background: #e4bf8a; }
+.soc-track { height: 7px; border-radius: 1px; }
+.soc-track::after { content: ''; display: block; position: relative; top: -7px; height: 7px; background: repeating-linear-gradient(90deg,transparent 0,transparent calc(10% - 2px),var(--ev-bg) calc(10% - 2px),var(--ev-bg) 10%); pointer-events: none; }
+.battery-status.charging { color: var(--ev-recovery); }
+.ev-drive-state { display: flex; justify-content: center; gap: 12px; min-height: 24px; align-items: center; }
+.regen-indicator { color: var(--ev-recovery); font-size: 12px; transition: color 180ms ease; }
+.regen-indicator:empty { display: none; }
+.energy-flow { margin-top: 16px; color: var(--ev-muted); }
+.energy-flow svg { display: block; width: 100%; max-width: 320px; height: 44px; margin: auto; }
+.energy-flow > span { display: block; font-size: 11px; margin-top: 6px; text-align: center; }
+.energy-flow.drive { color: var(--ev-accent); }
+.energy-flow.regen { color: var(--ev-recovery); }
+.flow-line { stroke-dasharray: 5 5; animation: flow-forward 1.2s linear infinite; animation-play-state: paused; }
+.flow-line.reverse { animation-name: flow-reverse; }
+.flow-running .flow-line { animation-play-state: running; }
+@keyframes flow-forward { to { stroke-dashoffset: -20; } }
+@keyframes flow-reverse { to { stroke-dashoffset: 20; } }
+.chart-plot { position: relative; }
+.chart-plot canvas { cursor: crosshair; }
+.chart-empty { position: absolute; left: 42px; top: 45%; font-size: 11px; color: var(--ev-muted); pointer-events: none; }
+.chart-tooltip { position: absolute; top: 8px; width: 184px; padding: 10px 12px; background: #1b2227; border: 1px solid var(--ev-control-border); border-radius: 4px; color: var(--ev-text); font-size: 11px; pointer-events: none; z-index: 2; }
+.chart-tooltip > strong { display: block; font-weight: 500; padding-bottom: 6px; border-bottom: 1px solid var(--ev-line); }
+.chart-tooltip > span { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+.chart-tooltip i { width: 8px; height: 2px; }
+.chart-tooltip b { margin-left: auto; font-weight: 400; font-variant-numeric: tabular-nums; }
+.chart-tooltip small { color: var(--ev-muted); }
+@media(min-width:1201px) {
+  .ev-dashboard { padding-top: 24px; }
+  .ev-cockpit { padding-top: 12px; padding-bottom: 16px; }
+  .ev-speed-gauge { min-height: 240px; }
+  .battery-status { margin-bottom: 16px; }
+  .power-readout { margin-top: 16px; margin-bottom: 16px; }
+  .ev-charts { margin: 12px 0; }
+  .chart-card canvas { height: 128px; }
+  .simulation-timeline { padding: 4px 0 8px; }
+  .ev-controls { padding: 12px 0; gap: 16px; }
+  .ev-footer { margin-top: 12px; }
+}
+@media(max-width:640px) {
+  .ev-session { gap: 8px 12px; width: 100%; grid-template-columns: auto auto; }
+  .ev-session .session-time { grid-column: 1/-1; font-size: 20px; }
+  .ev-session > .session-result { text-align: left; }
+  .energy-flow { margin-top: 16px; }
+  .chart-tooltip { width: 184px; }
+}
+@media(prefers-reduced-motion:reduce) { .flow-line { animation: none; } }
+@media(min-width:1201px) {
+  .ev-dashboard { padding-bottom: 16px; }
+  .soc-readout { margin-top: 12px; }
+  .energy-flow { margin-top: 12px; }
+  .energy-flow > span { margin-top: 4px; }
+  .chart-legend { margin-top: 8px; }
+  .chart-card .ev-footnote { line-height: 1.4; }
+  .ev-footer { margin-top: 8px; }
+}

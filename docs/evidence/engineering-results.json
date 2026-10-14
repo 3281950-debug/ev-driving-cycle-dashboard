@@ -1,0 +1,12 @@
+{
+  "tests": 73,
+  "lint": true,
+  "personalPathsAndCredentialPatternsFound": false,
+  "typecheck": true,
+  "sourceFilesPreserved": 55,
+  "missingRuntimeFailureMessage": true,
+  "originalPreservedFiles": 103,
+  "sourceRebuildAssetsMatch": true,
+  "build": true,
+  "portableServerTests": 2
+}

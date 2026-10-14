@@ -1,0 +1,11 @@
+﻿{
+    "restartURL":  "http://127.0.0.1:59818/",
+    "repeatedStartSingleInstance":  true,
+    "firstURL":  "http://127.0.0.1:59813/",
+    "noSystemNodeOrNpm":  true,
+    "concurrentStartSingleInstance":  true,
+    "restartWorks":  true,
+    "repeatStopSafe":  true,
+    "relocatedDirectoryWorks":  true,
+    "shutdownReleasesProcess":  true
+}

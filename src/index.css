@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  font-family: Inter, "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #101416;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Gauge animations */
+@keyframes needle-move {
+  from {
+    transform: rotate(var(--start-angle));
+  }
+  to {
+    transform: rotate(var(--end-angle));
+  }
+}
+
+.gauge-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .gauge-container {
+    width: 100% !important;
+    height: auto !important;
+  }
+  
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+}
